@@ -1,0 +1,31 @@
+
+name: Release_Build_master-uboot
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  iot2050_bootloaders_lock:
+    name: Bootloaders Lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Advanced
+        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+      - name: Archive bootloaders
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-bootloaders
+          path: build/tmp/deploy/images/iot2050/*.bin
+      - name: Archive build bootloader log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-bootloaders_build_log
+          path: ./build*.log
