@@ -1,0 +1,32 @@
+
+name: Release_Build_master_debian_package
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  iot2050_debian-example-image_lock:
+    name: example image debian package packge-lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Build image debian package update firmware
+        run:  git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build --target iot2050-firmware-update kas-iot2050-example.yml:kas/opt/package-lock.yml 2>&1 | tee -a ./build_example-image.log
+      - name: Upload image
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-example-image-debian-package
+          path: build/tmp/work/iot2050-debian-arm64/iot2050-firmware-update/0.1-r0/iot2050-firmware-update*.deb
+      - name: Upload example build log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-example-image-build-log
+          path: ./build_example-image.log
+
