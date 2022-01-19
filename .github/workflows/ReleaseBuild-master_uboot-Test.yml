@@ -10,7 +10,6 @@ on:
     
 jobs:
   iot2050_bootloaders_lock:
-    name: Bootloaders packge-lock
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,11 +32,11 @@ jobs:
           path: ./build*.log
   download_build_bootloaders:
     needs: iot2050_bootloaders_lock
-    name: download_bootloader
     runs-on: [self-hosted, IOT-Windows]
     steps:
         - name: download_bootloader
-          uses: actions/download-artifact@v2
+          run: echo "download"
+        - uses: actions/download-artifact@v2
           with:
             name: bootloaders_PG1_PG2
             path: download
