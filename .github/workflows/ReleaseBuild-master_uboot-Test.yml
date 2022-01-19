@@ -1,0 +1,43 @@
+
+name: Release_Build_master-uboot-Test
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  iot2050_bootloaders_lock:
+    name: Bootloaders packge-lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Build bootloader image for PG1
+        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+      - name: Build bootloader image for PG2
+        run: ./kas-container build kas-iot2050-boot-pg2.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+      - name: bootloaders_PG1_PG2
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-bootloaders
+          path: build/tmp/deploy/images/iot2050/*.bin
+      - name: Archive build bootloader log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-bootloaders_build_log
+          path: ./build*.log
+  download_build_bootloaders:
+    needs: iot2050_bootloaders_lock
+    name: download_bootloader
+    run-on: [self-hosted, IOT-Windows]
+    steps:
+        - name: download_bootloader
+          uses: actions/download-artifact@v2
+          with:
+            name:bootloaders_PG1_PG2
+            path:download
