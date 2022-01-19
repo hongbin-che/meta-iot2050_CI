@@ -18,8 +18,6 @@ jobs:
           ref: master
       - name: Build bootloader image for PG1
         run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
-      - name: Build bootloader image for PG2
-        run: ./kas-container build kas-iot2050-boot-pg2.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
       - name: bootloaders_PG1_PG2
         uses: actions/upload-artifact@v2
         with:
