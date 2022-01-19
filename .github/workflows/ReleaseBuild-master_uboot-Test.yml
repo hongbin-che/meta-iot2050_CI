@@ -39,5 +39,5 @@ jobs:
         - name: download_bootloader
           uses: actions/download-artifact@v2
           with:
-            name:bootloaders_PG1_PG2
-            path:download
+            name: bootloaders_PG1_PG2
+            path: download
