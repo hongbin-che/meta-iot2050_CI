@@ -15,6 +15,6 @@ jobs:
       - name: Download last artifact
         uses: blablacar/action-download-last-artifact@master
         with:
-          name: my-artifact
+          name: iot2050-bootloaders_build_log
       - name: Display structure of downloaded files
         run: dir
