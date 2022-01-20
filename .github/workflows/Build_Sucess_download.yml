@@ -1,0 +1,20 @@
+name: Download-Last-Success-Build
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  Download_last_success_build_artifacts:
+    runs-on: [self-hosted, IOT-Windows]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download last artifact
+        uses: blablacar/action-download-last-artifact@master
+        with:
+          name: my-artifact
+      - name: Display structure of downloaded files
+        run: dir
