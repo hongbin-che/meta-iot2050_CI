@@ -1,4 +1,4 @@
-name: Sync Siemens iot2050 repo master
+name: Sync iot2050 repo master
 on:
   workflow_dispatch:
   #watch:
