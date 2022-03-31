@@ -17,6 +17,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
       - name: Build image
         run:  git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/package-lock.yml 2>&1 | tee -a ./build_example-image.log
       - name: Upload image
@@ -38,6 +40,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
       - name: Build RT image
         run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/preempt-rt.yml:kas/opt/package-lock.yml 2>&1 | tee -a ./build_RT-example-image.log
       - name: Upload image
@@ -59,6 +63,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
       - name: Build SDK
         run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_SDK.log && ls -l build/tmp/deploy/images/iot2050/
       - name: Archive sdk
@@ -80,6 +86,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
       - name: Build bootloader image for PG1
         run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
       - name: Build bootloader image for PG2
