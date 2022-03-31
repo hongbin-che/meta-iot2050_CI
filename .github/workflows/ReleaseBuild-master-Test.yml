@@ -1,0 +1,26 @@
+
+name: Release_Build_master-new-Test-self-host
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  iot2050_debian-example-image_lock:
+    name: example image packge-lock
+    runs-on: [self-hosted, Linux_CNCTU04825]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Build image
+        run:  git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/package-lock.yml 2>&1 | tee -a ./build_example-image.log
+      - name: Upload example build log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-example-image-build-log
+          path: ./build_example-image.log
