@@ -1,0 +1,33 @@
+
+name: Release_master_lock-get-mainfest
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+  iot2050_debian-example-image_lock:
+    name: example image packge-lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
+      - name: Build image
+        run:  git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/package-lock.yml 2>&1 | tee -a ./build_example-image.log
+      - name: Upload image manifest
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-example-image-mainfest
+          path: build/tmp/deploy/images/iot2050/*.xml
+      - name: Upload example build log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-example-image-build-log
+          path: ./build_example-image.log
