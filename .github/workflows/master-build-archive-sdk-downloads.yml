@@ -1,0 +1,34 @@
+
+name: master-build-archive-sdk-downloads
+
+on:
+  workflow_dispatch:
+  #watch:
+  #  types: started
+  repository_dispatch:
+    types: relase_build
+    
+jobs:
+           
+  iot2050-sdk_lock:
+    name: SDK packge-lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: master
+      - name: Free Disk Space
+        uses: ./.github/workflows/free-disk-space
+      - name: Build SDK
+        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_SDK.log && ls -l build/tmp/deploy/images/iot2050/
+      - name: Archive sdk
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-sdk
+          path: build/downloads/*
+      - name: Upload sdk build log
+        uses: actions/upload-artifact@v2
+        with:
+          name: iot2050-sdk-build-log
+          path: ./build_SDK.log
