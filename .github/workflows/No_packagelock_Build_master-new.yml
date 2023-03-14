@@ -14,15 +14,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: master
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build image
-        run:  git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml 2>&1 | tee -a ./build_example-image.log
+        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml 2>&1 | tee -a ./build_example-image.log
       - name: Upload image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image
           path: |
@@ -30,7 +30,7 @@ jobs:
             build/tmp/work/iot2050-debian-arm64/iot2050-firmware-update/0.2-r0/iot2050-firmware-update_0.2_arm64.deb
             build/tmp/work/iot2050-debian-arm64/u-boot-iot2050-pg2/2022.01-r0/u-boot-2022.01/u-boot-initial-env
       - name: Upload example build log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image-build-log
           path: ./build_example-image.log
@@ -40,20 +40,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: master
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build RT image
-        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/preempt-rt.yml 2>&1 | tee -a ./build_RT-example-image.log
+        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/preempt-rt.yml 2>&1 | tee -a ./build_RT-example-image.log
       - name: Upload image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image-rt
           path: build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic.img
       - name: Upload RT example build log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image-RT-build-log
           path: ./build_RT-example-image.log
@@ -63,20 +63,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: master
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build SDK
-        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml 2>&1 | tee -a  ./build_SDK.log && ls -l build/tmp/deploy/images/iot2050/
+        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml 2>&1 | tee -a  ./build_SDK.log && ls -l build/tmp/deploy/images/iot2050/
       - name: Archive sdk
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-sdk
           path: build/tmp/deploy/images/iot2050/*.tar*
       - name: Upload sdk build log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-sdk-build-log
           path: ./build_SDK.log
@@ -86,22 +86,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: master
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build bootloader image for PG1
-        run: git reset --hard && git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml 2>&1 | tee -a  ./build_advance_bootloader.log
       - name: Build bootloader image for PG2
         run: ./kas-container build kas-iot2050-boot-pg2.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
       - name: Archive bootloaders
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-bootloaders
           path: build/tmp/deploy/images/iot2050/*.bin
       - name: Archive build bootloader log
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: iot2050-bootloaders_build_log
           path: ./build*.log
