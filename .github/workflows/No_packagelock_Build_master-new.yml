@@ -20,20 +20,15 @@ jobs:
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build image
-        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml 2>&1 | tee -a ./build_example-image.log
+        run: git fetch && git pull origin master && ./kas-container build kas-iot2050-example.yml 
       - name: Upload image
         uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image
           path: |
-            build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic.img
+            build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic
             build/tmp/work/iot2050-debian-arm64/iot2050-firmware-update/0.2-r0/iot2050-firmware-update_0.2_arm64.deb
             build/tmp/work/iot2050-debian-arm64/u-boot-iot2050-pg2/2022.01-r0/u-boot-2022.01/u-boot-initial-env
-      - name: Upload example build log
-        uses: actions/upload-artifact@v3
-        with:
-          name: iot2050-example-image-build-log
-          path: ./build_example-image.log
 
   iot2050_debian-rt-example-image:
     name: RT example image packge
@@ -46,17 +41,12 @@ jobs:
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build RT image
-        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/preempt-rt.yml 2>&1 | tee -a ./build_RT-example-image.log
+        run: git fetch && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/preempt-rt.yml 
       - name: Upload image
         uses: actions/upload-artifact@v3
         with:
           name: iot2050-example-image-rt
-          path: build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic.img
-      - name: Upload RT example build log
-        uses: actions/upload-artifact@v3
-        with:
-          name: iot2050-example-image-RT-build-log
-          path: ./build_RT-example-image.log
+          path: build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic
           
   iot2050-sdk:
     name: SDK packge
@@ -69,17 +59,12 @@ jobs:
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build SDK
-        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml 2>&1 | tee -a  ./build_SDK.log && ls -l build/tmp/deploy/images/iot2050/
+        run: git fetch && git pull origin master && ./kas-container build kas-iot2050-example.yml:kas/opt/sdk.yml 
       - name: Archive sdk
         uses: actions/upload-artifact@v3
         with:
           name: iot2050-sdk
           path: build/tmp/deploy/images/iot2050/*.tar*
-      - name: Upload sdk build log
-        uses: actions/upload-artifact@v3
-        with:
-          name: iot2050-sdk-build-log
-          path: ./build_SDK.log
           
   iot2050_bootloaders:
     name: Bootloaders packge
@@ -92,16 +77,11 @@ jobs:
       - name: Free Disk Space
         uses: ./.github/workflows/free-disk-space
       - name: Build bootloader image for PG1
-        run: git fetch && git checkout master && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+        run: git fetch && git pull origin master && ./kas-container build kas-iot2050-boot-pg1.yml 
       - name: Build bootloader image for PG2
-        run: ./kas-container build kas-iot2050-boot-pg2.yml:kas/opt/package-lock.yml 2>&1 | tee -a  ./build_advance_bootloader.log
+        run: ./kas-container build kas-iot2050-boot-pg2.yml 
       - name: Archive bootloaders
         uses: actions/upload-artifact@v3
         with:
           name: iot2050-bootloaders
           path: build/tmp/deploy/images/iot2050/*.bin
-      - name: Archive build bootloader log
-        uses: actions/upload-artifact@v3
-        with:
-          name: iot2050-bootloaders_build_log
-          path: ./build*.log
