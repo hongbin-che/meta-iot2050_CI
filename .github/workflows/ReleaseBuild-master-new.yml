@@ -25,7 +25,10 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: iot2050-example-image
-          path: build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic.img
+          path: |
+            build/tmp/deploy/images/iot2050/iot2050-image-example-iot2050-debian-iot2050.wic.img
+            build/tmp/work/iot2050-debian-arm64/iot2050-firmware-update/0.2-r0/iot2050-firmware-update_0.2_arm64.deb
+            build/tmp/work/iot2050-debian-arm64/u-boot-iot2050-pg2/2022.01-r0/u-boot-2022.01/u-boot-initial-env
       - name: Upload example build log
         uses: actions/upload-artifact@v2
         with:
